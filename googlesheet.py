@@ -125,3 +125,4 @@ if __name__ == '__main__':
     GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1zdCyYDe8I--faELjPcc7K45QPoy9iS8SZa02vb-au_4')
     sheet = GS.read_sheet('工作表1', 'A1', 'G')
     print(sheet)
+    print(sheet)
