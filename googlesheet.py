@@ -53,7 +53,7 @@ class GoogleOAuth2:
             self.client_id = config["installed"]["client_id"]
             self.client_secret = config["installed"]["client_secret"]
             self.auth_uri = config["installed"]["auth_uri"]
-            # self.token_uri = config["installed"]["token_uri"]
+            self.token_uri = config["installed"]["token_uri"]
             self.redirect_uri = config["installed"]["redirect_uris"]
 
     def get_code(self, scope, config_path=PATH_client_secret):
@@ -73,7 +73,6 @@ class GoogleOAuth2:
         self.get_config(config_path)
         code = self.get_code(scope)
         url = self.token_uri
-        print(url)
         header = {'Host': 'www.googleapis.com', 'Content-Type': 'application/x-www-form-urlencoded'}
         data = {'code': code,
                 'client_id': self.client_id,
@@ -111,12 +110,13 @@ class GoogleOAuth2:
 class GoogleSheet:
     def __init__(self, scope, sheet_id):
         self.access_token = GoogleOAuth2().get_access_token(scope)
+        self.access_token = "ya29.Gls8Bv_kzQnsXFl7Q1RCtng4OeTUhPNYeU3ZmcG44nGPQffQaVobhjz47PMwRsalPGI7uPcmKtNrz08MA1b5ym6RjNAztcDoC6JChFd7Wlf8qn9mRuOoe8E1ufPU"
         self.sheet_id = sheet_id
         self.sheet_header = {'Authorization': 'Bearer ' + self.access_token}
 
     def read_sheet(self, sheet_no, begin_cell, end_cell):
-        read_url = 'https://sheets.googleapis.com/v4/spreadsheets/{}/values/{}!{}:{}'.format(self.sheet_id, sheet_no,
-                                                                                             begin_cell, end_cell)
+        read_url = 'https://sheets.lug.ustc.edu.cn/v4/spreadsheets/{}/values/{}!{}:{}'.format(self.sheet_id, sheet_no,
+                                                                                              begin_cell, end_cell)
         response = requests.get(url=read_url, headers=self.sheet_header)
         result = json.loads(response.text)['values']
         return result
