@@ -125,5 +125,5 @@ class GoogleSheet:
 
 if __name__ == '__main__':
     GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1iQxXafRnRqMepFaRRSWchQZYsHS5NY92gcCeD7pvTew')
-    sheet = GS.read_sheet('工作表1', 'A1', 'G')
+    sheet = GS.read_sheet('api', 'A1', 'G')
     print(sheet)
