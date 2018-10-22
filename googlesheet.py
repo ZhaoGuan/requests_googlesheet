@@ -38,6 +38,9 @@ def get_access_token_config():
         return result
 
 
+rs = requests.session()
+
+
 class GoogleOAuth2:
 
     def __init__(self):
@@ -81,7 +84,7 @@ class GoogleOAuth2:
                 "grant_type": 'authorization_code',
                 "access_type": "access_token"
                 }
-        response = requests.post(url=url, data=data, headers=header)
+        response = rs.post(url=url, data=data, headers=header)
         token_config(json.loads(response.text))
         access_token(json.loads(response.text))
 
@@ -96,7 +99,7 @@ class GoogleOAuth2:
             'client_secret': self.client_secret,
             "grant_type": 'refresh_token',
         }
-        response = requests.post(url=url, data=data, headers=header)
+        response = rs.post(url=url, data=data, headers=header)
         access_token(json.loads(response.text))
 
     def get_access_token(self, scope, config_path=PATH_client_secret):
@@ -116,8 +119,8 @@ class GoogleSheet:
 
     def read_sheet(self, sheet_no, begin_cell, end_cell):
         read_url = 'https://sheets.googleapis.com/v4/spreadsheets/{}/values/{}!{}:{}'.format(self.sheet_id, sheet_no,
-                                                                                              begin_cell, end_cell)
-        response = requests.get(url=read_url, headers=self.sheet_header)
+                                                                                             begin_cell, end_cell)
+        response = rs.get(url=read_url, headers=self.sheet_header)
         print(response.text)
         result = json.loads(response.text)['values']
         return result
