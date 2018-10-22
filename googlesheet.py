@@ -113,7 +113,6 @@ class GoogleOAuth2:
 class GoogleSheet:
     def __init__(self, scope, sheet_id):
         self.access_token = GoogleOAuth2().get_access_token(scope)
-        self.access_token = "ya29.Gls8Bv_kzQnsXFl7Q1RCtng4OeTUhPNYeU3ZmcG44nGPQffQaVobhjz47PMwRsalPGI7uPcmKtNrz08MA1b5ym6RjNAztcDoC6JChFd7Wlf8qn9mRuOoe8E1ufPU"
         self.sheet_id = sheet_id
         self.sheet_header = {'Authorization': 'Bearer ' + self.access_token}
 
