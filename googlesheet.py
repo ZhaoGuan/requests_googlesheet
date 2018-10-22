@@ -115,7 +115,7 @@ class GoogleSheet:
         self.sheet_header = {'Authorization': 'Bearer ' + self.access_token}
 
     def read_sheet(self, sheet_no, begin_cell, end_cell):
-        read_url = 'https://sheets.lug.ustc.edu.cn/v4/spreadsheets/{}/values/{}!{}:{}'.format(self.sheet_id, sheet_no,
+        read_url = 'https://sheets.googleapis.com/v4/spreadsheets/{}/values/{}!{}:{}'.format(self.sheet_id, sheet_no,
                                                                                               begin_cell, end_cell)
         response = requests.get(url=read_url, headers=self.sheet_header)
         result = json.loads(response.text)['values']
