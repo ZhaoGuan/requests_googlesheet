@@ -118,7 +118,7 @@ class GoogleSheet:
 
     def get_sheet(self):
         get_sheet_url = "https://sheets.googleapis.com/v4/spreadsheets/{}:getByDataFilter".format(self.sheet_id)
-        response = requests.get(get_sheet_url, headers=self.sheet_header)
+        response = requests.post(get_sheet_url, headers=self.sheet_header)
         return response.text
 
     def read_sheet(self, sheet_no, begin_cell, end_cell):
