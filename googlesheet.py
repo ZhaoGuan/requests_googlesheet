@@ -125,11 +125,25 @@ class GoogleSheet:
         return result
 
     # def write_sheet(self):
-
-
+    # 添加列
+    def add_columns(self, sheet_no, length):
+        add_columns_url = "https://sheets.googleapis.com/v4/spreadsheets/{}:batchUpdate".format(
+            self.sheet_id)
+        data = {
+            "requests": [
+                {
+                    "appendDimension": {
+                        "sheetId": sheet_no,
+                        "dimension": "COLUMNS",
+                        "length": length
+                    }
+                }
+            ]
+        }
 
 
 if __name__ == '__main__':
     GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1OnABAiAUjIQTDlkJZnzLx2eybzRviJ5kEzJQic-oTdE')
-    sheet = GS.read_sheet('api', 'A1', 'G')
-    print(sheet)
+    # sheet = GS.read_sheet('popular', 'A1', 'G')
+    GS.add_columns("popular", 10)
+    # print(sheet)
