@@ -140,12 +140,12 @@ class GoogleSheet:
                 }
             ]
         }
-        response = requests.post(add_columns_url, data=data, headers=self.sheet_header)
+        response = requests.post(add_columns_url, json=data, headers=self.sheet_header)
         return response.text
 
 
 if __name__ == '__main__':
     GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1OnABAiAUjIQTDlkJZnzLx2eybzRviJ5kEzJQic-oTdE')
-    # sheet = GS.read_sheet('popular', 'A1', 'G')
-    sheet = GS.add_columns("popular", 10)
+    sheet = GS.read_sheet('popular', 'A1', '')
+    # sheet = GS.add_columns(0, 1)
     print(sheet)
