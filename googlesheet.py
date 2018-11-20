@@ -145,5 +145,5 @@ class GoogleSheet:
 if __name__ == '__main__':
     GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1OnABAiAUjIQTDlkJZnzLx2eybzRviJ5kEzJQic-oTdE')
     # sheet = GS.read_sheet('popular', 'A1', 'G')
-    GS.add_columns("popular", 10)
-    # print(sheet)
+    sheet = GS.add_columns("popular", 10)
+    print(sheet)
