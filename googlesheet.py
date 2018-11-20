@@ -115,11 +115,14 @@ class GoogleSheet:
         self.access_token = GoogleOAuth2().get_access_token(scope)
         self.sheet_id = sheet_id
         self.sheet_header = {'Authorization': 'Bearer ' + self.access_token}
-
-    def get_sheet(self):
+    # sheet_no的
+    # rowCount
+    # columnCount
+    def get_sheet(self, sheet_no):
         get_sheet_url = "https://sheets.googleapis.com/v4/spreadsheets/{}".format(self.sheet_id)
         response = requests.get(get_sheet_url, headers=self.sheet_header)
-        return response.text
+        result = json.loads(response.text)["sheets"][sheet_no]["gridProperties"]
+        return result
 
     def read_sheet(self, sheet_no, begin_cell, end_cell):
         read_url = 'https://sheets.googleapis.com/v4/spreadsheets/{}/values/{}!{}:{}'.format(self.sheet_id, sheet_no,
@@ -151,7 +154,7 @@ class GoogleSheet:
 
 if __name__ == '__main__':
     GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1OnABAiAUjIQTDlkJZnzLx2eybzRviJ5kEzJQic-oTdE')
-    # sheet = GS.read_sheet('popular', 'A1', '')
+    sheet = GS.read_sheet('popular', 'A1', '')
     sheet = GS.get_sheet()
     # sheet = GS.add_columns(0, 1)
     print(sheet)
