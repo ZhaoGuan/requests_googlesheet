@@ -140,6 +140,8 @@ class GoogleSheet:
                 }
             ]
         }
+        response = requests.post(add_columns_url, data=data, headers=self.sheet_header)
+        return response.text
 
 
 if __name__ == '__main__':
