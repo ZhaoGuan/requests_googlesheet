@@ -124,8 +124,12 @@ class GoogleSheet:
         result = json.loads(response.text)['values']
         return result
 
+    # def write_sheet(self):
+
+
+
 
 if __name__ == '__main__':
-    GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1iQxXafRnRqMepFaRRSWchQZYsHS5NY92gcCeD7pvTew')
+    GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1OnABAiAUjIQTDlkJZnzLx2eybzRviJ5kEzJQic-oTdE')
     sheet = GS.read_sheet('api', 'A1', 'G')
     print(sheet)
