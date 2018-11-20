@@ -116,8 +116,8 @@ class GoogleSheet:
         self.sheet_id = sheet_id
         self.sheet_header = {'Authorization': 'Bearer ' + self.access_token}
 
-    def get_sheet(self):
-        get_sheet_url = "https://sheets.googleapis.com/v4/spreadsheets/{}:getByDataFilter".format(self.sheet_id)
+    def get_sheet(self, sheet_no):
+        get_sheet_url = "https://sheets.googleapis.com/v4/spreadsheets/{}/values/!".format(self.sheet_id, sheet_no)
         response = requests.post(get_sheet_url, headers=self.sheet_header)
         return response.text
 
