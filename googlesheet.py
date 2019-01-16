@@ -38,6 +38,9 @@ def get_access_token_config():
         return result
 
 
+rs = requests.session()
+
+
 class GoogleOAuth2:
 
     def __init__(self):
@@ -81,7 +84,7 @@ class GoogleOAuth2:
                 "grant_type": 'authorization_code',
                 "access_type": "access_token"
                 }
-        response = requests.post(url=url, data=data, headers=header)
+        response = rs.post(url=url, data=data, headers=header)
         token_config(json.loads(response.text))
         access_token(json.loads(response.text))
 
@@ -96,7 +99,7 @@ class GoogleOAuth2:
             'client_secret': self.client_secret,
             "grant_type": 'refresh_token',
         }
-        response = requests.post(url=url, data=data, headers=header)
+        response = rs.post(url=url, data=data, headers=header)
         access_token(json.loads(response.text))
 
     def get_access_token(self, scope, config_path=PATH_client_secret):
@@ -110,19 +113,49 @@ class GoogleOAuth2:
 class GoogleSheet:
     def __init__(self, scope, sheet_id):
         self.access_token = GoogleOAuth2().get_access_token(scope)
-        self.access_token = "ya29.Gls8Bv_kzQnsXFl7Q1RCtng4OeTUhPNYeU3ZmcG44nGPQffQaVobhjz47PMwRsalPGI7uPcmKtNrz08MA1b5ym6RjNAztcDoC6JChFd7Wlf8qn9mRuOoe8E1ufPU"
         self.sheet_id = sheet_id
         self.sheet_header = {'Authorization': 'Bearer ' + self.access_token}
 
-    def read_sheet(self, sheet_no, begin_cell, end_cell):
-        read_url = 'https://sheets.lug.ustc.edu.cn/v4/spreadsheets/{}/values/{}!{}:{}'.format(self.sheet_id, sheet_no,
-                                                                                              begin_cell, end_cell)
-        response = requests.get(url=read_url, headers=self.sheet_header)
+    # sheet_no的
+    # rowCount
+    # columnCount
+    def get_sheet(self, sheet_no):
+        get_sheet_url = "https://sheets.googleapis.com/v4/spreadsheets/{}".format(self.sheet_id)
+        response = requests.get(get_sheet_url, headers=self.sheet_header)
+        result = json.loads(response.text)["sheets"][sheet_no]["gridProperties"]
+        return result
+
+    def read_sheet(self, sheet_name, begin_cell, end_cell):
+        read_url = 'https://sheets.googleapis.com/v4/spreadsheets/{}/values/{}!{}:{}'.format(self.sheet_id, sheet_name,
+                                                                                             begin_cell, end_cell)
+        response = rs.get(url=read_url, headers=self.sheet_header)
+        print(response.text)
         result = json.loads(response.text)['values']
         return result
 
+    # def write_sheet(self):
+    # 添加列
+    def add_columns(self, sheet_no, length):
+        add_columns_url = "https://sheets.googleapis.com/v4/spreadsheets/{}:batchUpdate".format(
+            self.sheet_id)
+        data = {
+            "requests": [
+                {
+                    "appendDimension": {
+                        "sheetId": sheet_no,
+                        "dimension": "COLUMNS",
+                        "length": length
+                    }
+                }
+            ]
+        }
+        response = requests.post(add_columns_url, json=data, headers=self.sheet_header)
+        return response.text
+
 
 if __name__ == '__main__':
-    GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1iQxXafRnRqMepFaRRSWchQZYsHS5NY92gcCeD7pvTew')
-    sheet = GS.read_sheet('工作表1', 'A1', 'G')
+    GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1OnABAiAUjIQTDlkJZnzLx2eybzRviJ5kEzJQic-oTdE')
+    sheet = GS.read_sheet('popular', 'A1', '')
+    sheet = GS.get_sheet(0)
+    # sheet = GS.add_columns(0, 1)
     print(sheet)
