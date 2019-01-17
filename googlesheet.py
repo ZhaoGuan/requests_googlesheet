@@ -56,6 +56,7 @@ class GoogleOAuth2:
             self.client_id = config["installed"]["client_id"]
             self.client_secret = config["installed"]["client_secret"]
             self.auth_uri = config["installed"]["auth_uri"]
+            # client_secret 中的token_uri过来
             # self.token_uri = config["installed"]["token_uri"]
             self.redirect_uri = config["installed"]["redirect_uris"]
 
