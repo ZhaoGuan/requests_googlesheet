@@ -56,7 +56,7 @@ class GoogleOAuth2:
             self.client_id = config["installed"]["client_id"]
             self.client_secret = config["installed"]["client_secret"]
             self.auth_uri = config["installed"]["auth_uri"]
-            self.token_uri = config["installed"]["token_uri"]
+            # self.token_uri = config["installed"]["token_uri"]
             self.redirect_uri = config["installed"]["redirect_uris"]
 
     def get_code(self, scope, config_path=PATH_client_secret):
@@ -76,6 +76,7 @@ class GoogleOAuth2:
         self.get_config(config_path)
         code = self.get_code(scope)
         url = self.token_uri
+        print(url)
         header = {'Host': 'www.googleapis.com', 'Content-Type': 'application/x-www-form-urlencoded'}
         data = {'code': code,
                 'client_id': self.client_id,
@@ -85,6 +86,7 @@ class GoogleOAuth2:
                 "access_type": "access_token"
                 }
         response = rs.post(url=url, data=data, headers=header)
+        print(response.text)
         token_config(json.loads(response.text))
         access_token(json.loads(response.text))
 
@@ -122,7 +124,7 @@ class GoogleSheet:
     def get_sheet(self, sheet_no):
         get_sheet_url = "https://sheets.googleapis.com/v4/spreadsheets/{}".format(self.sheet_id)
         response = requests.get(get_sheet_url, headers=self.sheet_header)
-        result = json.loads(response.text)["sheets"][sheet_no]["gridProperties"]
+        result = json.loads(response.text)["sheets"][sheet_no]["properties"]["gridProperties"]
         return result
 
     def read_sheet(self, sheet_name, begin_cell, end_cell):
@@ -155,7 +157,7 @@ class GoogleSheet:
 
 if __name__ == '__main__':
     GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1OnABAiAUjIQTDlkJZnzLx2eybzRviJ5kEzJQic-oTdE')
-    sheet = GS.read_sheet('popular', 'A1', '')
+    # sheet = GS.read_sheet('popular', 'A1', '')
     sheet = GS.get_sheet(0)
     # sheet = GS.add_columns(0, 1)
     print(sheet)
