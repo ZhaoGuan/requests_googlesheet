@@ -122,9 +122,11 @@ class GoogleSheet:
     # sheet_no的
     # rowCount
     # columnCount
+    # 并且sheets字段中有所有的sheets内容
     def get_sheet(self, sheet_no):
         get_sheet_url = "https://sheets.googleapis.com/v4/spreadsheets/{}".format(self.sheet_id)
         response = requests.get(get_sheet_url, headers=self.sheet_header)
+        print(response.text)
         result = json.loads(response.text)["sheets"][sheet_no]["properties"]["gridProperties"]
         return result
 
@@ -157,8 +159,8 @@ class GoogleSheet:
 
 
 if __name__ == '__main__':
-    GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1OnABAiAUjIQTDlkJZnzLx2eybzRviJ5kEzJQic-oTdE')
-    # sheet = GS.read_sheet('popular', 'A1', '')
-    sheet = GS.get_sheet(0)
+    GS = GoogleSheet('https://www.googleapis.com/auth/spreadsheets', '1_ECa9tBmHH4d5zaza880QW1LsUHI6qobhUm391d7ngo')
+    # sheet = GS.read_sheet('Dog meme', 'A1', 'F')
+    sheet = GS.get_sheet(1)
     # sheet = GS.add_columns(0, 1)
     print(sheet)
